@@ -1,0 +1,14 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+int main()
+{ int p;
+p=fork();
+if(p==0)
+printf(" child process created %d \n",getpid());
+if(p>0)
+printf(" parent process is running %d \n",getpid());
+if(p<0)
+printf(" child process not created %d \n",getpid());
+return 0;
+}
