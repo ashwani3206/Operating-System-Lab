@@ -1,0 +1,23 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+int main()
+{
+int n;
+printf(" enter number of terms \n");
+scanf("%d",&n);
+int p_id=fork();
+if(p_id ==0)
+{
+int sum=0,a=0,b=1,c;
+for(int i=0;i<n;i++)
+{
+sum=sum+a;
+c=a+b;
+a=b;
+b=c;
+}
+printf(" Sum of fibo series upto %d terms is %d \n",n,sum);
+}
+else
+{
