@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Function to initialize an empty queue
+void initializeQueue(int* queue, int pageFrames) {
+    for (int i = 0; i < pageFrames; i++) {
+        queue[i] = -1; // Initialize with -1 to represent empty frame
+    }
+}
+
+// Function to perform FIFO Page Replacement
+int FIFOPageReplacement(int pages[], int pageFrames, int numPages) {
+    int queue[pageFrames];
+    int front = 0, rear = 0;
+    int faultCount = 0;
+
+    // Initialize the queue
+    initializeQueue(queue, pageFrames);
+
+    for (int i = 0; i < numPages; i++) {
+        int currentPage = pages[i];
+        int pageFound = 0;
+
+        // Check if the current page is already in the queue
+        for (int j = 0; j < pageFrames; j++) {
+            if (queue[j] == currentPage) {
+                pageFound = 1;
+                break;
+            }
+        }
+
+        if (!pageFound) {
+            // Page fault, replace a page
+            if (rear < pageFrames) {
+                // Queue is not full yet, add the page to the rear
+                queue[rear] = currentPage;
+                rear++;
+            } else {
+                // Queue is full, replace the front page (oldest page)
+                queue[front] = currentPage;
+                front = (front + 1) % pageFrames;
+            }
+            faultCount++;
+        }
+    }
+
+    return faultCount;
+}
+
+int main() {
+    int pages[] = {1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5};
+    int pageFrames = 3;
+    int numPages = sizeof(pages) / sizeof(pages[0]);
+
+    int faults = FIFOPageReplacement(pages, pageFrames, numPages);
+    printf("Total Page Faults: %d\n", faults);
+
+    return 0;
+}
